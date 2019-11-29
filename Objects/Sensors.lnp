@@ -1,0 +1,11 @@
+--cpu Cortex-M0
+".\objects\ad7091.o"
+".\objects\main.o"
+".\objects\setup.o"
+".\objects\usart.o"
+".\objects\startup_stm32f030x8.o"
+".\objects\system_stm32f0xx.o"
+--strict --scatter ".\Objects\Sensors.sct"
+--summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list ".\Listings\Sensors.map" -o .\Objects\Sensors.axf
