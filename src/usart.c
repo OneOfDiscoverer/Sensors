@@ -25,7 +25,7 @@ void USART_Putchar(uint8_t d) {
 }
 
 void USART_Puts(char *s) {
-	uint16_t len = 0;
+	uint16_t len = 0; 
 	DMA1_Channel4->CMAR = (uint32_t)s;
 	while(*s++) len++;
 	DMA1->IFCR |= DMA_IFCR_CTCIF4 | DMA_IFCR_CGIF4 | DMA_IFCR_CHTIF4 | DMA_IFCR_CTEIF4;

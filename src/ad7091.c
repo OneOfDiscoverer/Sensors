@@ -38,21 +38,19 @@ void AD7091_Config(void) {
 	SpiDelay(10000l);
 	
 	//	Power-on initialization
-	for (int i=0; i < 66; i++) {
-		AD7091_ConvstClr();
-		SpiDelay(15);
-		AD7091_ConvstSet();
-		SpiDelay(15);
-	}
-	SpiDelay(1000);
-	AD7091_Select();
-	AD7091_WriteReg(REG_CHANNEL_ADDR, 0x3f);		// Enable only CH0..CH5
-	AD7091_DeSelect();
-	SpiDelay(1000);
-	AD7091_Select();
-	AD7091_WriteReg(REG_CONFIG_ADDR, (1UL << 9) );
-	SpiDelay(1000);
-	AD7091_DeSelect();
+//	for (int i=0; i < 66; i++) {
+//		AD7091_ConvstClr();
+//		SpiDelay(15);
+//		AD7091_ConvstSet();
+//		SpiDelay(15);
+//	}
+		AD7091_Select();
+		AD7091_WriteReg(REG_CHANNEL_ADDR, 0x3f);	// Enable only CH0..CH5
+		AD7091_DeSelect();
+		AD7091_Select();
+		AD7091_WriteReg(REG_CONFIG_ADDR, (1UL << 9) );
+		AD7091_DeSelect();
+
 }
 /*
 	Send data (16bit) to SPI1
@@ -82,10 +80,14 @@ uint64_t AD7091_ReadReg(uint8_t regAddr) {
 	AD7091_Select();
 	SPI_SendData(cmd);
 	SPI_SendData(cmd);
+	SPI_SendData(cmd);
+	SPI_SendData(cmd);
 	AD7091_DeSelect();
+	SpiDelay(1000);
 	AD7091_Select();
-//	uint64_t resp = (uint64_t)SPI_SendData(0) << 32;
-	uint64_t resp = SPI_SendData(0) << 16;
+	uint64_t resp = (uint64_t)SPI_SendData(0) << 48;
+	resp |= (uint64_t)SPI_SendData(0) << 32;
+	resp |= SPI_SendData(0) << 16;
 	resp |= SPI_SendData(0);
 	AD7091_DeSelect();
 	
@@ -101,7 +103,8 @@ void AD7091_WriteReg(uint8_t regAddr, uint16_t value) {
 	AD7091_Select();
 	SPI_SendData(cmd);
 	SPI_SendData(cmd);
-//	SPI_SendData(cmd);
+	SPI_SendData(cmd);
+	SPI_SendData(cmd);
 	AD7091_DeSelect();
 }
 /*

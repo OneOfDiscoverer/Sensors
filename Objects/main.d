@@ -11,3 +11,5 @@
 .\objects\main.o: .\inc\setup.h
 .\objects\main.o: .\inc\ad7091.h
 .\objects\main.o: .\inc\usart.h
+.\objects\main.o: src\gpio_init.h
+.\objects\main.o: .\inc\MEM_map.h
