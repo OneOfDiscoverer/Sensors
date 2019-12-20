@@ -406,6 +406,11 @@
               <FileType>1</FileType>
               <FilePath>.\src\gpio_init.c</FilePath>
             </File>
+            <File>
+              <FileName>Main_thread.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\Main_thread.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

@@ -4,6 +4,7 @@
 ".\objects\setup.o"
 ".\objects\usart.o"
 ".\objects\gpio_init.o"
+".\objects\main_thread.o"
 ".\objects\startup_stm32f030x8.o"
 ".\objects\system_stm32f0xx.o"
 --library_type=microlib --strict --scatter ".\Objects\Sensors.sct"

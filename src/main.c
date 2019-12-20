@@ -6,7 +6,7 @@
 #include "ad7091.h" 
 #include "gpio_init.h"
 #include "MEM_map.h"
-
+#include "Main_thread.h"
 
 volatile uint32_t tickCount, flags;
 uint16_t encode;
@@ -72,6 +72,8 @@ int main(void) {
 
 	while(1) {		
 		Watch_dog_reload();
+		do_modbus();
+//		Main_thread();
 //		if(flags & FL_ADC_OK)
 //		{
 			AD7091_Config();
@@ -93,8 +95,8 @@ int main(void) {
 				}
 				for (uint8_t i = 0; i < 6; ++i)
 				{
-		//			encode &= 0xFFFF0000;
-		//			encode = TIM1->CNT;
+//				encode &= 0xFFFF0000;
+//				encode = TIM1->CNT;
 					AD7091_ConvstClr();
 					AD7091_ConvstSet();
 					AD7091_Select();
@@ -121,7 +123,7 @@ int main(void) {
 				if(!(flags & FL_ADC_OK))
 				{
 					sprintf(str,"ADC not found\n");
-					USART_Puts(str);
+					//USART_Puts(str);
 				}
 				max_cnt = cnt;
 				flags &= ~FL_SEC;

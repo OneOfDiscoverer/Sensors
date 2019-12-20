@@ -22,17 +22,17 @@ Dialog DLL:      TARMCM1.DLL V1.14.0.0
  
 <h2>Project:</h2>
 D:\Git_repos\arm\Sensors\Sensors.uvprojx
-Project File Date:  12/17/2019
+Project File Date:  12/19/2019
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 6 (build 750)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
 Build target 'Target 1'
-compiling main.c...
-src\main.c(62): warning:  #550-D: variable "max_cnt"  was set but never used
-  	static uint32_t regValues[24], cnt, max_cnt;
-src\main.c: 1 warning, 0 errors
+compiling usart.c...
+src\usart.c(52): warning:  #223-D: function "sprintf" declared implicitly
+  				sprintf(str,"Main app\n");
+src\usart.c: 1 warning, 0 errors
 linking...
-Program Size: Code=3368 RO-data=236 RW-data=24 ZI-data=1360  
+Program Size: Code=3772 RO-data=236 RW-data=32 ZI-data=3408  
 FromELF: creating hex file...
 ".\Objects\Sensors.axf" - 0 Error(s), 1 Warning(s).
 
@@ -61,10 +61,10 @@ Package Vendor: Keil
 
    * Component: Keil.Standalone::Device:Startup:1.0.0
       Source file:   Drivers\CMSIS\Device\ST\STM32F0xx\Source\Templates\system_stm32f0xx.c
+      Include file:  Drivers\CMSIS\Device\ST\STM32F0xx\Include\stm32f0xx.h
       Source file:   MDK\Device\Source\ARM\STM32F0xx_OPT.s
       Source file:   Drivers\CMSIS\Device\ST\STM32F0xx\Source\Templates\arm\startup_stm32f030x8.s
-      Include file:  Drivers\CMSIS\Device\ST\STM32F0xx\Include\stm32f0xx.h
-Build Time Elapsed:  00:00:01
+Build Time Elapsed:  00:00:00
 </pre>
 </body>
 </html>

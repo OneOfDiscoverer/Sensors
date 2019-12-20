@@ -13,3 +13,4 @@
 .\objects\main.o: .\inc\usart.h
 .\objects\main.o: src\gpio_init.h
 .\objects\main.o: .\inc\MEM_map.h
+.\objects\main.o: .\inc\Main_thread.h
