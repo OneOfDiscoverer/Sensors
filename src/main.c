@@ -73,9 +73,6 @@ int main(void) {
 	while(1) {		
 		Watch_dog_reload();
 		do_modbus();
-//		Main_thread();
-//		if(flags & FL_ADC_OK)
-//		{
 			AD7091_Config();
 			uint64_t tmp_req = AD7091_ReadReg(REG_CHANNEL_ADDR);
 			if(tmp_req == (uint64_t)0x003f003f003f003f) flags |= FL_ADC_OK;
@@ -122,15 +119,16 @@ int main(void) {
 			{
 				if(!(flags & FL_ADC_OK))
 				{
-					sprintf(str,"ADC not found\n");
-					//USART_Puts(str);
+				//	sprintf(str,"ADC not found\n");
+				//	USART_Puts(str);
 				}
 				max_cnt = cnt;
 				flags &= ~FL_SEC;
 				cnt = 0;
 			}
-		}
-//	}
+
+	}
+	
 	
 }
 

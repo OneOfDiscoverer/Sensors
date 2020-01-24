@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\Objects\Sensors.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Objects\Sensors.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Fri Dec 20 17:02:28 2019
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Tue Jan 21 16:23:19 2020
 <BR><P>
 <H3>Maximum Stack Usage =         44 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -286,10 +286,10 @@ Global Symbols
 <P><STRONG><a name="[20]"></a>SystemInit</STRONG> (Thumb, 104 bytes, Stack size 0 bytes, system_stm32f0xx.o(i.SystemInit))
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f030x8.o(.text)
 </UL>
-<P><STRONG><a name="[1e]"></a>USART2_IRQHandler</STRONG> (Thumb, 68 bytes, Stack size 0 bytes, usart.o(i.USART2_IRQHandler))
+<P><STRONG><a name="[1e]"></a>USART2_IRQHandler</STRONG> (Thumb, 66 bytes, Stack size 0 bytes, usart.o(i.USART2_IRQHandler))
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f030x8.o(RESET)
 </UL>
-<P><STRONG><a name="[2f]"></a>USART_Config</STRONG> (Thumb, 154 bytes, Stack size 8 bytes, usart.o(i.USART_Config))
+<P><STRONG><a name="[2f]"></a>USART_Config</STRONG> (Thumb, 174 bytes, Stack size 8 bytes, usart.o(i.USART_Config))
 <BR><BR>[Stack]<UL><LI>Max Depth = 44<LI>Call Chain = USART_Config &rArr; SystemCoreClockUpdate &rArr; __aeabi_uidivmod
 </UL>
 <BR>[Calls]<UL><LI><a href="#[2e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_uidivmod
@@ -331,7 +331,7 @@ Global Symbols
 
 <P><STRONG><a name="[48]"></a>__scatterload_zeroinit</STRONG> (Thumb, 14 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_zeroinit), UNUSED)
 
-<P><STRONG><a name="[34]"></a>do_modbus</STRONG> (Thumb, 224 bytes, Stack size 8 bytes, usart.o(i.do_modbus))
+<P><STRONG><a name="[34]"></a>do_modbus</STRONG> (Thumb, 236 bytes, Stack size 8 bytes, usart.o(i.do_modbus))
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = do_modbus &rArr; __2sprintf
 </UL>
 <BR>[Calls]<UL><LI><a href="#[36]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2sprintf
@@ -347,7 +347,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[2b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Encoder_config
 </UL>
 
-<P><STRONG><a name="[1f]"></a>main</STRONG> (Thumb, 442 bytes, Stack size 0 bytes, main.o(i.main))
+<P><STRONG><a name="[1f]"></a>main</STRONG> (Thumb, 426 bytes, Stack size 0 bytes, main.o(i.main))
 <BR><BR>[Stack]<UL><LI>Max Depth = 44<LI>Call Chain = main &rArr; USART_Config &rArr; SystemCoreClockUpdate &rArr; __aeabi_uidivmod
 </UL>
 <BR>[Calls]<UL><LI><a href="#[36]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2sprintf
