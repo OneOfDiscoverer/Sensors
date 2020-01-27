@@ -10,3 +10,5 @@
 .\objects\usart.o: .\inc\usart.h
 .\objects\usart.o: .\inc\Main_thread.h
 .\objects\usart.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\objects\usart.o: .\inc\Flash_msp.h
+.\objects\usart.o: .\inc\MEM_map.h

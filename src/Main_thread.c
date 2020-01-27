@@ -2,16 +2,17 @@
 #include "stm32f0xx.h"
 #include "usart.h"
 #include "string.h"
+#include "Flash_msp.h"
+#include "MEM_map.h"
 
 extern volatile uint8_t buf[BUF_LEN];
 extern volatile uint16_t len;
-
 uint16_t num_page;
 uint8_t MT_mode;
-
+extern char str[128];
 void up_mt(void)
 {
-	MT_mode = MT_update_f;
+	if(MT_mode == MT_wait) MT_mode = MT_update_f;
 }
  
 void Main_thread(void)
@@ -20,15 +21,25 @@ void Main_thread(void)
 	{
 		case MT_wait:
 			break;
-		case MT_reset:
-			
-			break;
 		case MT_update_f:
-			if(!strcmp((char*)"flash\n", (char*)buf)) 
+			if(buf[0] == 0x55) 
 			{
+				FT_set_erase((uint16_t*)BOOT_LOADER_DATA_PAGE);
+				FLASH->CR |= FLASH_CR_PG; 
+				*(__IO uint16_t*)(BOOT_LOADER_DATA_PAGE) = KEY_UPDATE; 
+				while(!(FLASH->SR & FLASH_SR_EOP));
+				FLASH->SR |= FLASH_SR_EOP;
+				FLASH->CR &= ~FLASH_CR_PG;
 				NVIC_SystemReset();
 			}
-			else MT_mode = MT_wait;
+			else if(buf[0] == 0xDE) NVIC_SystemReset();
+			else
+			{
+				sprintf(str,"Com err\n");
+				USART_Puts(str);
+			}
+			buf_erase();
+			MT_mode = MT_wait;
 			break;
 	}
 }

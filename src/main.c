@@ -7,6 +7,7 @@
 #include "gpio_init.h"
 #include "MEM_map.h"
 #include "Main_thread.h"
+#include "Flash_msp.h"
 
 volatile uint32_t tickCount, flags;
 uint16_t encode;
@@ -16,6 +17,7 @@ volatile uint16_t regValues[24];
 
 #define FL_SEC			(0x0001)
 #define FL_ADC_OK   (0x0002)
+#define FL_DO				(0x0004)
 
 void Encoder_config(void);
 void Start_VTinit(void);
@@ -56,7 +58,6 @@ void Start_VTinit(void)
 	__enable_irq();
 }
 
-
 int main(void) {
 	static volatile uint32_t AD_Status;
 	static uint32_t regValues[24], cnt, max_cnt;
@@ -69,10 +70,11 @@ int main(void) {
 	USART_Puts(str);
 	
 	Encoder_config();
-
 	while(1) {		
 		Watch_dog_reload();
 		do_modbus();
+		Main_thread();
+		Flash_thread();
 			AD7091_Config();
 			uint64_t tmp_req = AD7091_ReadReg(REG_CHANNEL_ADDR);
 			if(tmp_req == (uint64_t)0x003f003f003f003f) flags |= FL_ADC_OK;
@@ -114,22 +116,20 @@ int main(void) {
 				USART_Puts(str);
 				USART_Putchar('\n');
 				cnt++;
-			}
+			
 			if (flags & FL_SEC)
 			{
 				if(!(flags & FL_ADC_OK))
 				{
-				//	sprintf(str,"ADC not found\n");
-				//	USART_Puts(str);
+					sprintf(str,"ADC not found\n");
+					USART_Puts(str);
 				}
 				max_cnt = cnt;
 				flags &= ~FL_SEC;
 				cnt = 0;
 			}
-
-	}
-	
-	
+		}
+	}	
 }
 
 //void TIM1_BRK_UP_TRG_COM_IRQHandler(void)
