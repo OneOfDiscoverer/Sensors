@@ -8,7 +8,7 @@
 
 extern volatile uint16_t buf[BUF_LEN];
 extern volatile uint16_t len;
-extern volatile uint32_t flags;
+extern volatile uint32_t flags, wait_timer;
 uint16_t num_page;
 uint8_t MT_mode;
 extern char str[128];
@@ -34,9 +34,13 @@ void Main_thread(void)
 					while(!(FLASH->SR & FLASH_SR_EOP));
 					FLASH->SR |= FLASH_SR_EOP;
 					FLASH->CR &= ~FLASH_CR_PG;
+					wait_timer = 5000;
+					while(wait_timer);
 					NVIC_SystemReset();
 					break;
 				case 0xDE:
+					wait_timer = 5000;
+					while(wait_timer);
 					NVIC_SystemReset();
 					break;
 				default:

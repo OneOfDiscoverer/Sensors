@@ -9,7 +9,7 @@
 #include "Main_thread.h"
 #include "Flash_msp.h"
 
-volatile uint32_t tickCount, flags;
+volatile uint32_t tickCount, flags, wait_timer;
 uint16_t encode;
 uint32_t adRegs[16];
 char str[128];
@@ -34,12 +34,15 @@ void Watch_dog_reload(void)
 {
 	IWDG -> KR = 0x0000AAAA;	
 }
-void SysTick_Handler(void) {
-	if (++tickCount >= 1000) {
+void SysTick_Handler(void) 
+{
+	if (++tickCount >= 1000) 
+	{
 		tickCount = 0;
 		flags |= FL_SEC;
 		flags &= ~FL_NS;
 	} 
+	if(wait_timer) wait_timer--;
 }
 
 void Start_VTinit(void)
@@ -60,6 +63,7 @@ int main(void) {
 	static volatile uint32_t AD_Status;
 	static uint32_t regValues[24], cnt, max_cnt;
 	Start_VTinit();
+	FT_unlock();
 	SysClockConfig();
 	SystemCoreClockUpdate();
 	SysTick_Config(SystemCoreClock / 1000);
