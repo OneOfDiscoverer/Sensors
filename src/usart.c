@@ -4,10 +4,11 @@
 #include "string.h"
 #include "Flash_msp.h"
 #include "MEM_map.h"
+#include "setup.h"
 
-volatile uint8_t buf[BUF_LEN];
+volatile uint16_t buf[BUF_LEN];
 volatile uint16_t len, state;
-
+extern volatile uint32_t flags;
 extern void FL_DO_set(void);
 extern void FL_DO_reset(void);
 
@@ -106,23 +107,29 @@ void USART2_IRQHandler(void)
 }
 
 void USART_Puts(char *s) {
-	uint16_t len = 0;
-	DMA1_Channel4->CMAR = (uint32_t)s;
-	while(*s++) len++;
-	DMA1->IFCR |= DMA_IFCR_CTCIF4 | DMA_IFCR_CGIF4 | DMA_IFCR_CHTIF4 | DMA_IFCR_CTEIF4;
-	DMA1_Channel4->CCR &= ~DMA_CCR_EN;
-	DMA1_Channel4->CNDTR = len;
-	DMA1_Channel4->CCR |= DMA_CCR_EN;
-	while(!(DMA1->ISR & DMA_ISR_TCIF4));	
+	if(!(flags & FL_NS))
+	{
+		uint16_t len = 0;
+		DMA1_Channel4->CMAR = (uint32_t)s;
+		while(*s++) len++;
+		DMA1->IFCR |= DMA_IFCR_CTCIF4 | DMA_IFCR_CGIF4 | DMA_IFCR_CHTIF4 | DMA_IFCR_CTEIF4;
+		DMA1_Channel4->CCR &= ~DMA_CCR_EN;
+		DMA1_Channel4->CNDTR = len;
+		DMA1_Channel4->CCR |= DMA_CCR_EN;
+		while(!(DMA1->ISR & DMA_ISR_TCIF4));	
+	}
 }
 void USART_PutDat(uint32_t s) {
-	uint16_t len = 1;
-	DMA1_Channel4->CMAR = (uint32_t)s;
-	DMA1->IFCR |= DMA_IFCR_CTCIF4 | DMA_IFCR_CGIF4 | DMA_IFCR_CHTIF4 | DMA_IFCR_CTEIF4;
-	DMA1_Channel4->CCR &= ~DMA_CCR_EN;
-	DMA1_Channel4->CNDTR = len;
-	DMA1_Channel4->CCR |= DMA_CCR_EN;
-	while(!(DMA1->ISR & DMA_ISR_TCIF4));	
+	if(!(flags & FL_NS))
+	{
+		uint16_t len = 1;
+		DMA1_Channel4->CMAR = (uint32_t)s;
+		DMA1->IFCR |= DMA_IFCR_CTCIF4 | DMA_IFCR_CGIF4 | DMA_IFCR_CHTIF4 | DMA_IFCR_CTEIF4;
+		DMA1_Channel4->CCR &= ~DMA_CCR_EN;
+		DMA1_Channel4->CNDTR = len;
+		DMA1_Channel4->CCR |= DMA_CCR_EN;
+		while(!(DMA1->ISR & DMA_ISR_TCIF4));	
+	}
 }
 
 

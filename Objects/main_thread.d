@@ -12,3 +12,4 @@
 .\objects\main_thread.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
 .\objects\main_thread.o: .\inc\Flash_msp.h
 .\objects\main_thread.o: .\inc\MEM_map.h
+.\objects\main_thread.o: .\inc\setup.h

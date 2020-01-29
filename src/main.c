@@ -15,9 +15,6 @@ uint32_t adRegs[16];
 char str[128];
 volatile uint16_t regValues[24];
 
-#define FL_SEC			(0x0001)
-#define FL_ADC_OK   (0x0002)
-#define FL_DO				(0x0004)
 
 void Encoder_config(void);
 void Start_VTinit(void);
@@ -41,6 +38,7 @@ void SysTick_Handler(void) {
 	if (++tickCount >= 1000) {
 		tickCount = 0;
 		flags |= FL_SEC;
+		flags &= ~FL_NS;
 	} 
 }
 
@@ -70,64 +68,65 @@ int main(void) {
 	USART_Puts(str);
 	
 	Encoder_config();
-	while(1) {		
+	while(1) 
+	{		
+		
 		Watch_dog_reload();
 		do_modbus();
 		Main_thread();
 		Flash_thread();
-			AD7091_Config();
-			uint64_t tmp_req = AD7091_ReadReg(REG_CHANNEL_ADDR);
-			if(tmp_req == (uint64_t)0x003f003f003f003f) flags |= FL_ADC_OK;
-			else flags &= ~FL_ADC_OK;
-			if(flags & FL_ADC_OK)
+		
+		AD7091_Config();
+		uint64_t tmp_req = AD7091_ReadReg(REG_CHANNEL_ADDR);
+		if(tmp_req == (uint64_t)0x003f003f003f003f) flags |= FL_ADC_OK;
+		else flags &= ~FL_ADC_OK;
+		if(flags & FL_ADC_OK)
+		{
+			for (uint8_t i = 0; i < 1; ++i)
 			{
-				for (uint8_t i = 0; i < 1; ++i)
-				{
-					AD7091_ConvstClr();
-					AD7091_ConvstSet();
-					AD7091_Select();
-					SPI_SendData(0);
-					SPI_SendData(0);
-					SPI_SendData(0);
-					SPI_SendData(0);
-					AD7091_DeSelect();
-				}
-				for (uint8_t i = 0; i < 6; ++i)
-				{
-//				encode &= 0xFFFF0000;
-//				encode = TIM1->CNT;
-					AD7091_ConvstClr();
-					AD7091_ConvstSet();
-					AD7091_Select();
-					regValues[i + 18] = SPI_SendData(0);
-					regValues[i + 12] = SPI_SendData(0);
-					regValues[i + 6] 	= SPI_SendData(0);
-					regValues[i] 			= SPI_SendData(0);
-					AD7091_DeSelect();
-				}
-				for (int i = 0; i < 24; i++) 
-				{
-	//				if((regValues[i] == 0x0000) || (regValues[i] == 0xFFFF)) sprintf(str, "[%02d nop]", i);
-	//				else 
-					sprintf(str, "%04d;", regValues[i] & 0x0FFF);
-					USART_Puts(str);
-				}
-				sprintf(str, "%u", cnt);
-				USART_Puts(str);
-				USART_Putchar('\n');
-				cnt++;
-			
-			if (flags & FL_SEC)
-			{
-				if(!(flags & FL_ADC_OK))
-				{
-					sprintf(str,"ADC not found\n");
-					USART_Puts(str);
-				}
-				max_cnt = cnt;
-				flags &= ~FL_SEC;
-				cnt = 0;
+				AD7091_ConvstClr();
+				AD7091_ConvstSet();
+				AD7091_Select();
+				SPI_SendData(0);
+				SPI_SendData(0);
+				SPI_SendData(0);
+				SPI_SendData(0);
+				AD7091_DeSelect();
 			}
+			for (uint8_t i = 0; i < 6; ++i)
+			{
+				//encode &= 0xFFFF0000;
+				encode = TIM1->CNT;
+				AD7091_ConvstClr();
+				AD7091_ConvstSet();
+				AD7091_Select();
+				regValues[i + 18] = SPI_SendData(0);
+				regValues[i + 12] = SPI_SendData(0);
+				regValues[i + 6] 	= SPI_SendData(0);
+				regValues[i] 			= SPI_SendData(0);
+				AD7091_DeSelect();
+			}
+			for (int i = 0; i < 24; i++) 
+			{
+//				if((regValues[i] == 0x0000) || (regValues[i] == 0xFFFF)) sprintf(str, "[%02d nop]", i);
+//				else 
+				sprintf(str, "%04d;", regValues[i] & 0x0FFF);
+				USART_Puts(str);
+			}
+			sprintf(str, "%u", encode);
+			USART_Puts(str);
+			USART_Putchar('\n');
+		//		cnt++;
+		}
+		if (flags & FL_SEC)
+		{
+			if(!(flags & FL_ADC_OK))
+			{
+				sprintf(str,"ADC not found\n");
+				USART_Puts(str);
+			}
+			flags &= ~FL_SEC;
+			cnt = 0;
 		}
 	}	
 }
